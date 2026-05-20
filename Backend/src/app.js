@@ -50,7 +50,16 @@ app.use(securityMiddleware);
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.status(200).json({ success: true, message: 'ARVO API is running', timestamp: new Date().toISOString() });
+  const mongoose = require('mongoose');
+  const dbStatus = mongoose.connection.readyState;
+  const dbStatusString = ['disconnected', 'connected', 'connecting', 'disconnecting'][dbStatus] || 'unknown';
+  
+  res.status(dbStatus === 1 ? 200 : 500).json({
+    success: dbStatus === 1,
+    message: dbStatus === 1 ? 'ARVO API is running and database is connected' : `ARVO API is running but database is ${dbStatusString}`,
+    dbStatus: dbStatusString,
+    timestamp: new Date().toISOString()
+  });
 });
 
 // API Routes
