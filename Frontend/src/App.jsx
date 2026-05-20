@@ -20,9 +20,10 @@ import Schedule from "./pages/Schedule";
 import Settings from "./pages/Settings";
 import Leaderboard from "./pages/Leaderboard";
 import Community from "./pages/Community";
-import ExamTaker from "./pages/Examtaker";
+import ExamTaker from "./pages/ExamTaker";
 import Games from "./pages/Games";
 import CreateExam from "./pages/CreateExam";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
@@ -90,6 +91,12 @@ const App = () => {
                 element={<CreateExam />}
               />
             </Route>
+
+            {/* Navbar Route */}
+            <Route
+              path="/navbar"
+              element={<Navbar />}
+            />
 
             {/* Redirect Unknown Routes */}
             <Route
