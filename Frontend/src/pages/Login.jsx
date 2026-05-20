@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ArrowLeft, Mail, Lock, User, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, Mail, Lock, User, ShieldCheck, Eye, EyeOff } from 'lucide-react';
 
 const Login = () => {
   const location = useLocation();
@@ -14,9 +14,10 @@ const Login = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
   const { login, user } = useAuth();
   const navigate = useNavigate();
 
@@ -170,14 +171,60 @@ const Login = () => {
             <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: 'var(--text-muted)', fontSize: '0.875rem' }}>
               <Lock size={14} /> Password
             </label>
-            <input 
-              type="password" 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
-              placeholder="••••••••"
-              style={{ width: '100%', padding: '0.875rem', borderRadius: '8px', border: '1px solid var(--border-color)', backgroundColor: 'transparent', color: 'var(--text-main)', outline: 'none' }}
-            />
+            <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+              <input 
+                type={showPassword ? 'text' : 'password'} 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                required 
+                placeholder="••••••••"
+                style={{ 
+                  width: '100%', 
+                  padding: '0.875rem', 
+                  paddingRight: '2.5rem', 
+                  borderRadius: '8px', 
+                  border: '1px solid var(--border-color)', 
+                  backgroundColor: 'transparent', 
+                  color: 'var(--text-main)', 
+                  outline: 'none' 
+                }}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: 'absolute',
+                  right: '0.875rem',
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--text-muted)',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: 0
+                }}
+                title={showPassword ? 'Hide Password' : 'Show Password'}
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+            <p style={{ 
+              fontSize: '0.75rem', 
+              color: password.length >= 6 ? 'var(--text-muted)' : '#ff4444', 
+              marginTop: '0.375rem', 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: '0.375rem' 
+            }}>
+              <span style={{ 
+                display: 'inline-block', 
+                width: '6px', 
+                height: '6px', 
+                borderRadius: '50%', 
+                backgroundColor: password.length >= 6 ? '#10b981' : '#ff4444' 
+              }}></span>
+              Must be at least 6 characters
+            </p>
           </div>
 
           <button 
